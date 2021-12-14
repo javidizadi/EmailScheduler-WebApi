@@ -9,11 +9,14 @@ public class EmailScheduleJob : IJob
 {
     private readonly EmailService _emailService;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<EmailScheduleJob> _logger;
 
-    public EmailScheduleJob(EmailService emailService, IServiceProvider serviceProvider)
+    public EmailScheduleJob(EmailService emailService, IServiceProvider serviceProvider,
+        ILogger<EmailScheduleJob> logger)
     {
         _emailService = emailService;
         _serviceProvider = serviceProvider;
+        _logger = logger;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -34,6 +37,10 @@ public class EmailScheduleJob : IJob
 
                 await db.SaveChangesAsync();
             }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(new EventId(), e, "Error In Doing Job");
         }
         finally
         {
