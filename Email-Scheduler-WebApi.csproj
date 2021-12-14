@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Email_Scheduler_WebApi</RootNamespace>
+    <UserSecretsId>27b9c7d9-d287-4f61-9062-dbf832fdc2a2</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
