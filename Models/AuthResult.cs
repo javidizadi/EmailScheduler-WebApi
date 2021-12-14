@@ -1,4 +1,4 @@
-namespace Email_Scheduler_WebApi.Configuration;
+namespace Email_Scheduler_WebApi.Models;
 
 public class AuthResult
 {
