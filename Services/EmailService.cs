@@ -3,6 +3,7 @@ using System.Net.Mail;
 using System.Text;
 
 using Email_Scheduler_WebApi.Models;
+using Microsoft.Extensions.Options;
 
 namespace Email_Scheduler_WebApi.Services;
 
@@ -12,8 +13,10 @@ public class EmailService
 
     private readonly string _from;
 
-    public EmailService(SmtpConfigs configs)
+    public EmailService(IOptionsMonitor<Configuration.SmtpConfigs> optionsMonitor)
     {
+        var configs = optionsMonitor.CurrentValue;
+        
         _client = new SmtpClient(configs.Host, configs.Port)
         {
             EnableSsl = true,

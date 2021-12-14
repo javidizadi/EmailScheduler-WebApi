@@ -2,16 +2,29 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
 using Email_Scheduler_WebApi.Data;
-using Email_Scheduler_WebApi.Models;
 using Email_Scheduler_WebApi.Services;
-
+using Email_Scheduler_WebApi.Configuration;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.Configure<SmtpConfigs>(configs =>
+{
+    configs.Host = builder.Configuration["SMTP:Host"];
+
+    configs.Port = int.Parse(builder.Configuration["SMTP:Port"]);
+
+    configs.Username = builder.Configuration["SMTP:Username"];
+
+    configs.Password = builder.Configuration["SMTP:Password"];
+
+    configs.From = builder.Configuration["SMTP:From"];
+});
+
 
 // Add services to the container.
 
