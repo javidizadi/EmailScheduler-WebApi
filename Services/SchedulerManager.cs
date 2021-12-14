@@ -23,7 +23,7 @@ public class SchedulerManager
         _emailScheduleHandler.AddSchedule(schedule);
     }
 
-    public async Task EditSchedule(EmailSchedule newSchedule)
+    public async Task UpdateSchedule(EmailSchedule newSchedule)
     {
         _db.EmailSchedules?.Update(newSchedule);
 
@@ -40,6 +40,6 @@ public class SchedulerManager
 
         await _db.SaveChangesAsync();
 
-        _emailScheduleHandler.AddSchedule(schedule);
+        _emailScheduleHandler.RemoveSchedule(schedule.Id);
     }
 }
