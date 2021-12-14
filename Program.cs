@@ -1,8 +1,11 @@
 using System.Text;
-using Email_Scheduler_WebApi.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+
+using Email_Scheduler_WebApi.Data;
+using Email_Scheduler_WebApi.Models;
+using Email_Scheduler_WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +37,10 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddControllers();
+
+// Register Email Service
+builder.Services.AddSingleton<SmtpConfigs>();
+builder.Services.AddTransient<EmailService>();
 
 var app = builder.Build();
 
