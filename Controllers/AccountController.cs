@@ -1,10 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Email_Scheduler_WebApi.Configuration;
 using Email_Scheduler_WebApi.Models.DTOs.Requests;
 using Email_Scheduler_WebApi.Models.DTOs.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -96,11 +96,12 @@ public class AccountController : Controller
 
         var tokenDetails = new SecurityTokenDescriptor()
         {
-            Claims = new Dictionary<string, object>()
+            Subject = new ClaimsIdentity(new[]
             {
-                {"Id", user.Id},
-                {"Email", user.Email}
-            },
+                new Claim("Id", user.Id),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            }),
 
             Expires = DateTime.Now.AddHours(6),
 
