@@ -65,6 +65,9 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<SmtpConfigs>();
 builder.Services.AddTransient<EmailService>();
 
+// Register Scheduler Manager
+builder.Services.AddTransient<SchedulerManager>();
+
 // Register Quartz Background Service
 builder.Services.AddHostedService<QuartzHostedService>();
 
@@ -76,6 +79,7 @@ builder.Services.AddTransient<EmailScheduleJob>();
 
 // Register Schedule Loader Background Service
 builder.Services.AddHostedService<ScheduleLoaderService>();
+
 
 var app = builder.Build();
 
