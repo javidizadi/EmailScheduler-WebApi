@@ -30,16 +30,6 @@ public class AccountController : Controller
             return BadRequest();
         }
 
-        var userSearchResult = await _userManager.FindByEmailAsync(body.Email);
-
-        if (userSearchResult != null)
-        {
-            return BadRequest(new UserRegistrationResponseDto
-            {
-                Errors = new[] {"Email Already Exist"}, Success = false
-            });
-        }
-
         var user = new IdentityUser
         {
             Email = body.Email,
@@ -79,7 +69,7 @@ public class AccountController : Controller
         {
             return NotFound(new UserLoginResponseDto
             {
-                Errors = new[] {"Email or Password is not Correct"},
+                Errors = new[] {"Email or Password is Incorrect"},
                 Success = false
             });
         }
@@ -95,7 +85,7 @@ public class AccountController : Controller
 
         return NotFound(new UserLoginResponseDto
         {
-            Errors = new[] {"Email or Password is not Correct"},
+            Errors = new[] {"Email or Password is Incorrect"},
             Success = false
         });
     }
