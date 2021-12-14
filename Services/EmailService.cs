@@ -24,7 +24,7 @@ public class EmailService
         _from = configs.From;
     }
 
-    public async Task SendMail(string to, string subject, string body)
+    public async Task SendMail(string? to, string? subject, string? body)
     {
         var message = new MailMessage(_from, to)
         {
