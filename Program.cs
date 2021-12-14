@@ -25,6 +25,8 @@ builder.Services.Configure<SmtpConfigs>(configs =>
     configs.From = builder.Configuration["SMTP:From"];
 });
 
+builder.Services.Configure<JwtConfigs>(configs =>
+    configs.Secret = builder.Configuration["JWT:Secret"]);
 
 // Add services to the container.
 
