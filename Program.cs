@@ -7,6 +7,10 @@ using Email_Scheduler_WebApi.Data;
 using Email_Scheduler_WebApi.Models;
 using Email_Scheduler_WebApi.Services;
 
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -41,6 +45,18 @@ builder.Services.AddControllers();
 // Register Email Service
 builder.Services.AddSingleton<SmtpConfigs>();
 builder.Services.AddTransient<EmailService>();
+
+// Register Quartz Background Service
+builder.Services.AddHostedService<QuartzHostedService>();
+
+// Register Quartz Service Dependencies
+builder.Services.AddSingleton<EmailScheduleHandler>();
+builder.Services.AddSingleton<IJobFactory, SingletonJobFactory>();
+builder.Services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+builder.Services.AddTransient<EmailScheduleJob>();
+
+// Register Schedule Loader Background Service
+builder.Services.AddHostedService<ScheduleLoaderService>();
 
 var app = builder.Build();
 
