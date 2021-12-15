@@ -76,6 +76,11 @@ public class QuartzHostedService : IHostedService
 
     private async void OnUnscheduled(object? sender, int scheduleId)
     {
-        await _scheduler?.UnscheduleJob(new TriggerKey(scheduleId.ToString()))!;
+        var jobKey = new JobKey(scheduleId.ToString());
+        
+        if (await _scheduler?.CheckExists(jobKey)!)
+        {
+            await _scheduler?.UnscheduleJob(new TriggerKey(scheduleId.ToString()))!;
+        }
     }
 }
