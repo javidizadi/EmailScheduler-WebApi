@@ -46,7 +46,7 @@ public class SchedulesController : Controller
                 SendTime = schedule.SendTime,
                 SendTo = schedule.SendTo,
                 IsCompleted = schedule.IsCompleted
-            }).ToListAsync();
+            }).ToList();
 
         return Ok(schedules);
     }
