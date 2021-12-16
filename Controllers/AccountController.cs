@@ -3,6 +3,8 @@ using System.Security.Claims;
 using Email_Scheduler_WebApi.Configuration;
 using Email_Scheduler_WebApi.Models.DTOs.Requests;
 using Email_Scheduler_WebApi.Models.DTOs.Responses;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -69,7 +71,7 @@ public class AccountController : Controller
         {
             return NotFound(new UserLoginResponseDto
             {
-                Errors = new[] {"Email or Password is Incorrect"},
+                Errors = new[] { "Email or Password is Incorrect" },
                 Success = false
             });
         }
@@ -85,11 +87,33 @@ public class AccountController : Controller
 
         return NotFound(new UserLoginResponseDto
         {
-            Errors = new[] {"Email or Password is Incorrect"},
+            Errors = new[] { "Email or Password is Incorrect" },
             Success = false
         });
     }
 
+    [HttpPost]
+    [Route("ChangePassword")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto body)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var userId = User.FindFirstValue("Id");
+        var currentUser = await _userManager.FindByIdAsync(userId);
+
+        var result = await _userManager.ChangePasswordAsync(currentUser, body.CurrentPassword, body.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors.Select(x => x.Description).ToList());
+        }
+
+        return Ok();
+    }
     private string GenerateJwt(IdentityUser user)
     {
         var securityKey = new SymmetricSecurityKey(_jwtConfigs.Secret);
