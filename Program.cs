@@ -59,6 +59,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+// Add CORS Policies
+builder.Services.AddCors();
+
 builder.Services.AddControllers();
 
 // Register Email Service
@@ -84,6 +87,14 @@ builder.Services.AddHostedService<ScheduleLoaderService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// Configure CORS Policies
+app.UseCors(p =>
+{
+    p.AllowAnyHeader();
+    p.WithMethods("GET", "POST", "PUT", "DELETE");
+    p.WithOrigins("http://localhost:3000"); // it's temp for dev Front-end
+});
 
 app.UseHttpsRedirection();
 
