@@ -93,7 +93,7 @@ app.UseCors(p =>
 {
     p.AllowAnyHeader();
     p.WithMethods("GET", "POST", "PUT", "DELETE");
-    p.WithOrigins("https://emailscheduler.javidizadi.ir"); // it's temp for dev Front-end
+    p.WithOrigins("https://emailscheduler.javidizadi.ir");
 });
 
 app.UseHttpsRedirection();
